@@ -1,0 +1,137 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #f8f5f1;
+    color: #3f3935;
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+}
+
+.hero {
+    width: 100%;
+    max-width: 650px;
+    text-align: center;
+}
+
+.eyebrow {
+    font-size: 12px;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: clamp(42px, 8vw, 70px);
+    font-weight: 400;
+}
+
+h1 span {
+    font-family: Georgia, serif;
+    font-style: italic;
+}
+
+.date {
+    margin-top: 12px;
+    letter-spacing: 4px;
+    font-size: 14px;
+}
+
+.divider {
+    width: 60px;
+    height: 1px;
+    background: #b9aaa0;
+    margin: 30px auto;
+}
+
+h2 {
+    font-family: Georgia, serif;
+    font-size: 34px;
+    font-weight: 400;
+}
+
+.description {
+    max-width: 500px;
+    margin: 18px auto 35px;
+    line-height: 1.7;
+    color: #716861;
+}
+
+.upload-box {
+    background: white;
+    border: 1px solid #e5ded8;
+    border-radius: 20px;
+    padding: 40px 25px;
+    box-shadow: 0 15px 40px rgba(60, 50, 40, 0.08);
+}
+
+.upload-icon {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.upload-box h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.upload-box p {
+    color: #888;
+    margin-bottom: 25px;
+}
+
+#fileInput {
+    display: none;
+}
+
+.upload-button {
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 30px;
+    background: #3f3935;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.upload-button:hover {
+    transform: translateY(-2px);
+}
+
+.file-list {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.file-item {
+    background: white;
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+@media (max-width: 500px) {
+
+    .container {
+        padding: 20px 15px;
+    }
+
+    .upload-box {
+        padding: 30px 20px;
+    }
+
+    h2 {
+        font-size: 28px;
+    }
+}
