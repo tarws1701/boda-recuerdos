@@ -9,19 +9,21 @@ const statusMessage = document.getElementById("statusMessage");
 
 const SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbzKAuez5pEZwSym7uron25V6TFXsK7Mzx3kOTFwlAdjjduhUy4NTjP0lzJzpI1PrWAW/exec";
+
 // =====================================================
-// LÍMITES
+// LÍMITES DE ARCHIVOS
 // =====================================================
 
-const MAX_IMAGE_SIZE = 8 * 1024 * 1024;       // 8 MB
-const MAX_VIDEO_SIZE = 80 * 1024 * 1024;     // 80 MB
-const MAX_TOTAL_SIZE = 100 * 1024 * 1024;    // 100 MB
-const MAX_VIDEO_DURATION = 90;               // 1 minuto y 30 segundos
+const MAX_IMAGE_SIZE = 8 * 1024 * 1024;       // 8 MB por foto
+const MAX_VIDEO_SIZE = 80 * 1024 * 1024;      // 80 MB por video
+const MAX_TOTAL_SIZE = 100 * 1024 * 1024;     // 100 MB por envío
+const MAX_VIDEO_DURATION = 90;                // 1 minuto y 30 segundos
 
 let selectedFiles = [];
+let temporizadorMensaje;
 
 // =====================================================
-// SELECCIONAR ARCHIVOS
+// SELECCIONAR FOTOS Y VIDEOS
 // =====================================================
 
 fileInput.addEventListener("change", async () => {
@@ -30,44 +32,72 @@ fileInput.addEventListener("change", async () => {
     if (files.length === 0) return;
 
     for (const file of files) {
+
+        // Evitar archivos duplicados
         const yaExiste = selectedFiles.some(
-            f => f.name === file.name &&
-                 f.size === file.size &&
-                 f.lastModified === file.lastModified
+            f =>
+                f.name === file.name &&
+                f.size === file.size &&
+                f.lastModified === file.lastModified
         );
 
         if (yaExiste) continue;
 
+        // Validar tipo de archivo
         if (
             !file.type.startsWith("image/") &&
             !file.type.startsWith("video/")
         ) {
-            mostrarEstado(`❌ ${file.name} no es una foto ni un video.`, true);
+            mostrarEstado(
+                `❌ ${file.name} no es una foto ni un video.`,
+                true
+            );
             continue;
         }
 
-        if (file.type.startsWith("image/") && file.size > MAX_IMAGE_SIZE) {
-            mostrarEstado(`❌ ${file.name} supera los 8 MB.`, true);
+        // Validar tamaño de foto
+        if (
+            file.type.startsWith("image/") &&
+            file.size > MAX_IMAGE_SIZE
+        ) {
+            mostrarEstado(
+                `❌ ${file.name} supera el límite de 8 MB por foto.`,
+                true
+            );
             continue;
         }
 
-        if (file.type.startsWith("video/") && file.size > MAX_VIDEO_SIZE) {
-            mostrarEstado(`❌ ${file.name} supera los 80 MB.`, true);
+        // Validar tamaño de video
+        if (
+            file.type.startsWith("video/") &&
+            file.size > MAX_VIDEO_SIZE
+        ) {
+            mostrarEstado(
+                `❌ ${file.name} supera el límite de 80 MB por video.`,
+                true
+            );
             continue;
         }
 
+        // Validar duración de video
         if (file.type.startsWith("video/")) {
+            mostrarEstado(
+                `💕 Comprobando la duración de ${file.name}...`,
+                false
+            );
+
             const duracion = await obtenerDuracionVideo(file);
 
             if (duracion > MAX_VIDEO_DURATION) {
                 mostrarEstado(
-                    `❌ ${file.name} dura más de 1 minuto y 30 segundos.`,
+                    `❌ ${file.name} supera el límite de 1 minuto y 30 segundos.`,
                     true
                 );
                 continue;
             }
         }
 
+        // Validar tamaño total del envío
         const totalActual = selectedFiles.reduce(
             (total, f) => total + f.size,
             0
@@ -75,17 +105,19 @@ fileInput.addEventListener("change", async () => {
 
         if (totalActual + file.size > MAX_TOTAL_SIZE) {
             mostrarEstado(
-                "❌ No puedes superar los 100 MB por envío. Elimina algún archivo e inténtalo nuevamente.",
+                "❌ Has alcanzado el límite de 100 MB por envío. Elimina algún archivo para continuar.",
                 true
             );
             continue;
         }
 
+        // Agregar archivo válido
         selectedFiles.push(file);
     }
 
-    // Permite volver a elegir los mismos archivos.
+    // Permitir volver a seleccionar los mismos archivos
     fileInput.value = "";
+
     actualizarLista();
 });
 
@@ -98,7 +130,6 @@ function actualizarLista() {
 
     if (selectedFiles.length === 0) {
         uploadButton.disabled = true;
-        mostrarEstado("", false);
         return;
     }
 
@@ -106,23 +137,31 @@ function actualizarLista() {
         const item = document.createElement("div");
         item.classList.add("file-item");
 
+        // Vista previa
         const preview = document.createElement("div");
         preview.classList.add("file-preview");
 
         if (file.type.startsWith("image/")) {
             const img = document.createElement("img");
             img.src = URL.createObjectURL(file);
-            img.onload = () => URL.revokeObjectURL(img.src);
+
+            img.onload = () => {
+                URL.revokeObjectURL(img.src);
+            };
+
             preview.appendChild(img);
+
         } else if (file.type.startsWith("video/")) {
             const video = document.createElement("video");
             video.src = URL.createObjectURL(file);
             video.controls = true;
             video.muted = true;
             video.playsInline = true;
+
             preview.appendChild(video);
         }
 
+        // Nombre y tamaño
         const info = document.createElement("div");
         info.classList.add("file-info");
 
@@ -137,6 +176,7 @@ function actualizarLista() {
         info.appendChild(nombre);
         info.appendChild(tamano);
 
+        // Botón para eliminar archivo
         const deleteButton = document.createElement("button");
         deleteButton.classList.add("delete-file");
         deleteButton.type = "button";
@@ -151,9 +191,11 @@ function actualizarLista() {
         item.appendChild(preview);
         item.appendChild(info);
         item.appendChild(deleteButton);
+
         fileList.appendChild(item);
     });
 
+    // Mostrar tamaño total
     const total = selectedFiles.reduce(
         (sum, file) => sum + file.size,
         0
@@ -165,6 +207,8 @@ function actualizarLista() {
         `📦 Total seleccionado: ${formatearTamano(total)} / 100 MB`;
 
     fileList.appendChild(totalElement);
+
+    // Activar botón de envío
     uploadButton.disabled = false;
 }
 
@@ -178,20 +222,25 @@ uploadButton.addEventListener("click", async () => {
     uploadButton.disabled = true;
 
     const archivosParaSubir = [...selectedFiles];
+
     let enviados = 0;
     let errores = 0;
 
-    mostrarEstado("💕 Preparando tus recuerdos...", false);
+    mostrarEstado(
+        "💕 Estamos preparando tus recuerdos para compartirlos...",
+        false
+    );
 
     for (let i = 0; i < archivosParaSubir.length; i++) {
         const file = archivosParaSubir[i];
 
         try {
             mostrarEstado(
-                `💕 Enviando ${i + 1} de ${archivosParaSubir.length}: ${file.name}`,
+                `💕 Enviando recuerdo ${i + 1} de ${archivosParaSubir.length}...`,
                 false
             );
 
+            // Convertir el archivo a Base64
             const base64 = await convertirBase64(file);
 
             const datos = {
@@ -200,7 +249,9 @@ uploadButton.addEventListener("click", async () => {
                 archivo: base64
             };
 
-            // Envío sin leer la respuesta, para evitar el bloqueo CORS.
+            // Enviar únicamente al Drive principal.
+            // no-cors evita que el navegador bloquee la lectura
+            // de la respuesta de Google Apps Script.
             await fetch(SCRIPT_URL, {
                 method: "POST",
                 mode: "no-cors",
@@ -208,29 +259,38 @@ uploadButton.addEventListener("click", async () => {
             });
 
             enviados++;
+
         } catch (error) {
             errores++;
-            console.error(`Error al enviar ${file.name}:`, error);
+
+            console.error(
+                `Error al enviar ${file.name}:`,
+                error
+            );
         }
     }
 
+    // Resultado del envío
     if (errores === 0) {
         mostrarEstado(
-            `💕 Se enviaron ${enviados} archivo(s). Gracias por compartir.`,
-            false
+            "💕 ¡Gracias por ser parte de nuestros recuerdos! Con mucho cariño, Wilmer & Shadai.",
+            false,
+            30000
         );
 
-        // Limpiar la selección al terminar el envío.
+        // Limpiar la selección al terminar
         selectedFiles = [];
         fileInput.value = "";
         fileList.innerHTML = "";
         uploadButton.disabled = true;
+
     } else {
         uploadButton.disabled = false;
 
         mostrarEstado(
-            `⚠️ Se enviaron ${enviados} archivo(s) y hubo ${errores} error(es) de envío. Revisa el Drive antes de volver a intentarlo.`,
-            true
+            "💗 Tuvimos un pequeño inconveniente al enviar tus recuerdos. Por favor, inténtalo nuevamente.",
+            true,
+            30000
         );
     }
 });
@@ -248,7 +308,9 @@ function convertirBase64(file) {
             resolve(base64);
         };
 
-        reader.onerror = () => reject(reader.error);
+        reader.onerror = () => {
+            reject(reader.error);
+        };
 
         reader.readAsDataURL(file);
     });
@@ -267,7 +329,9 @@ function obtenerDuracionVideo(file) {
 
         video.onloadedmetadata = () => {
             const duracion = video.duration;
+
             URL.revokeObjectURL(url);
+
             resolve(duracion);
         };
 
@@ -281,7 +345,7 @@ function obtenerDuracionVideo(file) {
 }
 
 // =====================================================
-// FORMATEAR TAMAÑO
+// FORMATEAR TAMAÑO DE ARCHIVO
 // =====================================================
 
 function formatearTamano(bytes) {
@@ -293,10 +357,21 @@ function formatearTamano(bytes) {
 }
 
 // =====================================================
-// MOSTRAR MENSAJE
+// MENSAJES TEMPORALES
 // =====================================================
 
-function mostrarEstado(mensaje, error) {
+function mostrarEstado(mensaje, error, duracion = 30000) {
+    // Cancelar el temporizador del mensaje anterior
+    clearTimeout(temporizadorMensaje);
+
     statusMessage.textContent = mensaje;
     statusMessage.classList.toggle("error", error);
+
+    // Desaparecer después de 30 segundos
+    if (mensaje.trim() !== "") {
+        temporizadorMensaje = setTimeout(() => {
+            statusMessage.textContent = "";
+            statusMessage.classList.remove("error");
+        }, duracion);
+    }
 }
