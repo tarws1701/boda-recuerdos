@@ -1,3 +1,7 @@
+/* =========================
+   CONFIGURACIÓN GENERAL
+========================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -6,132 +10,577 @@
 
 body {
     min-height: 100vh;
-    font-family: Arial, sans-serif;
-    background: #f8f5f1;
-    color: #3f3935;
-}
+    font-family: 'Montserrat', sans-serif;
+    background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.9), transparent 35%),
+        linear-gradient(135deg, #f8f4ef, #eee6dd);
 
-.container {
-    min-height: 100vh;
+    color: #4d4038;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 30px 20px;
+
+    padding: 30px 15px;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================
+   CONTENEDOR
+========================= */
+
+.container {
+    width: 100%;
+    max-width: 720px;
 }
 
 .hero {
-    width: 100%;
-    max-width: 650px;
+    position: relative;
+
+    background: rgba(255, 255, 255, 0.82);
+
+    border-radius: 30px;
+
+    padding: 55px 45px;
+
     text-align: center;
+
+    box-shadow:
+        0 20px 60px rgba(91, 72, 57, 0.12);
+
+    backdrop-filter: blur(8px);
+
+    overflow: hidden;
+
+    animation: fadeUp 1s ease;
 }
 
+
+/* =========================
+   DECORACIONES
+========================= */
+
+.decor {
+    position: absolute;
+
+    font-family: 'Cormorant Garamond', serif;
+
+    opacity: 0.25;
+
+    pointer-events: none;
+}
+
+.decor-one {
+    top: 25px;
+    left: 35px;
+
+    font-size: 40px;
+
+    animation: float 4s ease-in-out infinite;
+}
+
+.decor-two {
+    right: 35px;
+    top: 55px;
+
+    font-size: 42px;
+
+    animation: float 5s ease-in-out infinite reverse;
+}
+
+
+/* =========================
+   ENCABEZADO
+========================= */
+
 .eyebrow {
-    font-size: 12px;
+    font-size: 11px;
+
     letter-spacing: 4px;
-    margin-bottom: 20px;
+
+    font-weight: 600;
+
+    margin-bottom: 14px;
+
+    opacity: 0.7;
 }
 
 h1 {
-    font-size: clamp(42px, 8vw, 70px);
-    font-weight: 400;
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: clamp(58px, 10vw, 82px);
+
+    font-weight: 500;
+
+    line-height: 0.9;
+
+    margin-bottom: 15px;
+
+    color: #51443c;
 }
 
 h1 span {
-    font-family: Georgia, serif;
     font-style: italic;
+
+    font-weight: 400;
+
+    margin: 0 7px;
 }
 
 .date {
-    margin-top: 12px;
-    letter-spacing: 4px;
-    font-size: 14px;
+    font-size: 12px;
+
+    letter-spacing: 5px;
+
+    font-weight: 500;
+
+    opacity: 0.65;
 }
+
+
+/* =========================
+   DIVISOR
+========================= */
 
 .divider {
-    width: 60px;
-    height: 1px;
-    background: #b9aaa0;
-    margin: 30px auto;
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    margin: 28px auto;
 }
 
+.divider::before,
+.divider::after {
+    content: "";
+
+    width: 80px;
+
+    height: 1px;
+
+    background: #cbbcaf;
+}
+
+.divider span {
+    font-size: 18px;
+
+    opacity: 0.6;
+}
+
+
+/* =========================
+   TÍTULO PRINCIPAL
+========================= */
+
 h2 {
-    font-family: Georgia, serif;
-    font-size: 34px;
-    font-weight: 400;
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 38px;
+
+    font-weight: 600;
+
+    margin-bottom: 10px;
 }
 
 .description {
-    max-width: 500px;
-    margin: 18px auto 35px;
-    line-height: 1.7;
-    color: #716861;
+    max-width: 510px;
+
+    margin: 0 auto 30px;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    color: #766960;
 }
 
+
+/* =========================
+   CAJA DE SUBIDA
+========================= */
+
 .upload-box {
-    background: white;
-    border: 1px solid #e5ded8;
-    border-radius: 20px;
-    padding: 40px 25px;
-    box-shadow: 0 15px 40px rgba(60, 50, 40, 0.08);
+    background: rgba(250, 247, 243, 0.95);
+
+    border: 1px dashed #cdbfb3;
+
+    border-radius: 22px;
+
+    padding: 30px 20px;
+
+    transition: 0.3s ease;
+}
+
+.upload-box:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 10px 30px rgba(80, 60, 45, 0.08);
 }
 
 .upload-icon {
-    font-size: 42px;
-    margin-bottom: 15px;
+    font-size: 35px;
+
+    margin-bottom: 10px;
+
+    animation: cameraFloat 3s ease-in-out infinite;
 }
 
 .upload-box h3 {
-    font-size: 20px;
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 25px;
+
+    font-weight: 600;
+
     margin-bottom: 8px;
 }
 
-.upload-box p {
-    color: #888;
-    margin-bottom: 25px;
+.upload-info {
+    font-size: 12px;
+
+    line-height: 1.7;
+
+    color: #82756d;
+
+    margin-bottom: 20px;
 }
+
+
+/* =========================
+   INPUT
+========================= */
 
 #fileInput {
     display: none;
 }
 
+
+/* =========================
+   BOTÓN SELECCIONAR
+========================= */
+
 .upload-button {
     display: inline-block;
-    padding: 14px 28px;
-    border-radius: 30px;
-    background: #3f3935;
+
+    background: #5d4b41;
+
     color: white;
+
+    padding: 13px 25px;
+
+    border-radius: 30px;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    letter-spacing: 0.5px;
+
     cursor: pointer;
-    transition: 0.2s ease;
+
+    transition: 0.3s ease;
 }
 
 .upload-button:hover {
+    background: #46372f;
+
     transform: translateY(-2px);
+
+    box-shadow: 0 8px 20px rgba(70, 55, 47, 0.2);
 }
+
+.limits {
+    margin-top: 15px;
+
+    font-size: 10px;
+
+    color: #9a8d84;
+}
+
+
+/* =========================
+   LISTA DE ARCHIVOS
+========================= */
 
 .file-list {
-    margin-top: 20px;
-    text-align: left;
+    margin-top: 25px;
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+
+    gap: 12px;
 }
+
+
+/* TARJETA */
 
 .file-item {
-    background: white;
-    padding: 12px 15px;
-    border-radius: 10px;
-    margin-bottom: 8px;
-    font-size: 14px;
+    position: relative;
+
+    background: #faf8f5;
+
+    border-radius: 15px;
+
+    overflow: hidden;
+
+    border: 1px solid #e7ddd5;
+
+    animation: appear 0.4s ease;
+
+    min-height: 150px;
 }
 
-@media (max-width: 500px) {
 
-    .container {
-        padding: 20px 15px;
+/* PREVISUALIZACIÓN */
+
+.file-preview {
+    width: 100%;
+
+    height: 110px;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.file-video {
+    width: 100%;
+
+    height: 110px;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* NOMBRE */
+
+.file-name {
+    padding: 7px 30px 7px 9px;
+
+    font-size: 9px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    color: #65584f;
+}
+
+
+/* BOTÓN ELIMINAR */
+
+.delete-file {
+    position: absolute;
+
+    top: 7px;
+
+    right: 7px;
+
+    width: 27px;
+
+    height: 27px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    color: #6b574c;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+
+    transition: 0.2s;
+}
+
+.delete-file:hover {
+    transform: scale(1.1);
+
+    background: white;
+}
+
+
+/* =========================
+   BOTÓN SUBIR
+========================= */
+
+.upload-submit {
+    width: 100%;
+
+    margin-top: 22px;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 30px;
+
+    background: #9c8171;
+
+    color: white;
+
+    font-family: 'Montserrat', sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+}
+
+.upload-submit:hover:not(:disabled) {
+    background: #7d6658;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 20px rgba(80, 60, 45, 0.18);
+}
+
+.upload-submit:disabled {
+    opacity: 0.45;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================
+   MENSAJE
+========================= */
+
+.status-message {
+    margin-top: 15px;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================
+   PIE
+========================= */
+
+.footer-text {
+    margin-top: 35px;
+
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 20px;
+
+    font-style: italic;
+
+    opacity: 0.7;
+}
+
+
+/* =========================
+   ANIMACIONES
+========================= */
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+
+        transform: translateY(25px);
     }
 
-    .upload-box {
-        padding: 30px 20px;
+    to {
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+}
+
+@keyframes appear {
+
+    from {
+        opacity: 0;
+
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: scale(1);
+    }
+}
+
+@keyframes float {
+
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes cameraFloat {
+
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+
+/* =========================
+   CELULAR
+========================= */
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 15px;
+    }
+
+    .hero {
+        padding: 40px 20px;
+
+        border-radius: 24px;
+    }
+
+    h1 {
+        font-size: 58px;
     }
 
     h2 {
-        font-size: 28px;
+        font-size: 32px;
+    }
+
+    .description {
+        font-size: 12px;
+    }
+
+    .divider::before,
+    .divider::after {
+        width: 55px;
+    }
+
+    .file-list {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
