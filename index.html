@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Comparte tus recuerdos</title>
+    <title>Wilmer & Shadai | Comparte tus recuerdos</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -15,6 +20,9 @@
 
         <section class="hero">
 
+            <div class="decor decor-one">✦</div>
+            <div class="decor decor-two">♡</div>
+
             <p class="eyebrow">NUESTRA BODA</p>
 
             <h1>
@@ -22,10 +30,12 @@
             </h1>
 
             <p class="date">
-                10 · 10 · 2026
+                17 · 10 · 2026
             </p>
 
-            <div class="divider"></div>
+            <div class="divider">
+                <span>♡</span>
+            </div>
 
             <h2>
                 Comparte tus recuerdos
@@ -44,11 +54,11 @@
                 </div>
 
                 <h3>
-                    Sube tus fotos y videos
+                    Guarda este momento con nosotros
                 </h3>
 
-                <p>
-                    No necesitas registrarte.
+                <p class="upload-info">
+                    Selecciona tus fotos y videos.<br>
                 </p>
 
                 <input
@@ -59,12 +69,22 @@
                 >
 
                 <label for="fileInput" class="upload-button">
-                    Seleccionar archivos
+                    Seleccionar recuerdos
                 </label>
 
             </div>
 
             <div id="fileList" class="file-list"></div>
+
+            <button id="uploadButton" class="upload-submit" disabled>
+                💕 Subir mis recuerdos
+            </button>
+
+            <div id="statusMessage" class="status-message"></div>
+
+            <p class="footer-text">
+                Gracias por ser parte de nuestro día ♡
+            </p>
 
         </section>
 
