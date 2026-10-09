@@ -216,7 +216,7 @@ uploadButton.addEventListener("click", async () => {
 
     if (errores === 0) {
         mostrarEstado(
-            `💕 Se enviaron ${enviados} archivo(s). Revisa el Drive principal para confirmar que se guardaron.`,
+            `💕 Se enviaron ${enviados} archivo(s). Gracias por compartir.`,
             false
         );
 
